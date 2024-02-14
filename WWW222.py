@@ -7,23 +7,20 @@ width, height = 800, 600
 screen = pygame.display.set_mode((width, height))
 pygame.display.set_caption("Maze Escape")
 
-# Colors
+
 white = (255, 255, 255)
 black = (0, 0, 0)
 red = (255, 0, 0)
 
-# Player attributes
 player_size = 20
 player_x = 50
 player_y = 50
-player_speed = 20  # Increase speed for better visibility
+player_speed = 20  
 
-# Maze attributes
 maze_width = 20
 maze_height = 15
 maze_block_size = 40
 
-# Maze generation using recursive backtracking algorithm
 def generate_maze(width, height):
     maze = [[0 for _ in range(width)] for _ in range(height)]
 
@@ -40,12 +37,9 @@ def generate_maze(width, height):
     create_maze(random.randint(0, width // 2 - 1) * 2, random.randint(0, height // 2 - 1) * 2)
     return maze
 
-# Generate an escapable maze
 maze = generate_maze(maze_width, maze_height)
 maze[0][1] = 0
 maze[maze_height-1][maze_width-2] = 0
-
-# Introductory screen
 intro = True
 while intro:
     screen.fill(black)
@@ -57,12 +51,10 @@ while intro:
         if event.type == pygame.KEYDOWN:
             intro = False
 
-# Main game loop
 running = True
 while running:
     screen.fill(white)
 
-    # Handling events for player movement
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -76,16 +68,13 @@ while running:
             elif event.key == pygame.K_RIGHT and maze[int(player_y / maze_block_size)][int((player_x + player_speed + player_size) / maze_block_size)] == 0:
                 player_x += player_speed
 
-    # Draw the maze
     for i in range(maze_height):
         for j in range(maze_width):
             if maze[i][j]:
                 pygame.draw.rect(screen, black, (j * maze_block_size, i * maze_block_size, maze_block_size, maze_block_size))
 
-    # Draw the player
     pygame.draw.rect(screen, red, (player_x, player_y, player_size, player_size))
 
-    # Update the display
     pygame.display.flip()
     pygame.time.Clock().tick(10)  # Reduce tick for smoother movement
 
